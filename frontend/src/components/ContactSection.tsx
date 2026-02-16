@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import emailjs from "@emailjs/browser";
+import NotificationModal from "./NotificationModal";
+import emailjsConfig from "@/config/emailjs";
 
 const socials = [
   { icon: Phone, label: "+91 8301887868", href: "tel:+918301887868" },
@@ -15,10 +18,51 @@ const socials = [
 export default function ContactSection() {
   const { ref, isVisible } = useScrollAnimation();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const [notification, setNotification] = useState<{
+    isOpen: boolean;
+    type: "success" | "error";
+    message: string;
+  }>({ isOpen: false, type: "success", message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Initialize EmailJS with public key from environment
+    emailjs.init(emailjsConfig.publicKey);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // UI only
+    setIsLoading(true);
+
+    try {
+      await emailjs.send(
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
+        {
+          to_email: emailjsConfig.receiveEmail,
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        }
+      );
+      
+      // Reset form
+      setFormData({ name: "", email: "", message: "" });
+      setNotification({
+        isOpen: true,
+        type: "success",
+        message: "Message sent successfully!",
+      });
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      setNotification({
+        isOpen: true,
+        type: "error",
+        message: "Failed to send message. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -80,14 +124,22 @@ export default function ContactSection() {
             />
             <Button
               type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/80 glow-blue"
+              disabled={isLoading}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/80 glow-blue disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send size={16} className="mr-2" />
-              Send Message
+              {isLoading ? "Sending..." : "Send Message"}
             </Button>
           </form>
         </div>
       </div>
+
+      <NotificationModal
+        isOpen={notification.isOpen}
+        type={notification.type}
+        message={notification.message}
+        onClose={() => setNotification({ ...notification, isOpen: false })}
+      />
     </section>
   );
 }
