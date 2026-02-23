@@ -11,18 +11,11 @@ const projects = [
     github: "https://github.com/athul-jestin/ArguMate-AI",
   },
   {
-    title: "Cafe-chatbot",
-    subtitle: "Conversational Data Analysis AI",
-    desc: "AI assistant for interpreting and analyzing café-related data using NLP techniques.",
-    tech: ["Python", "NLP", "Chatbot"],
-    github: "https://github.com/athul-jestin/Cafe-chatbot",
-  },
-  {
-    title: "Titanic-survival-predictor",
-    subtitle: "ML Prediction Web App",
-    desc: "Streamlit-based ML application predicting Titanic passenger survival using linear regression.",
-    tech: ["Python", "Streamlit", "scikit-learn"],
-    github: "https://github.com/athul-jestin/Titanic-survival-predictor",
+    title: "SnapTrace",
+    subtitle: "AI-Powered Financial Memory Engine",
+    desc: "Transform screenshots into searchable financial intelligence using AI. Automatically extracts transaction data from payment app screenshots, enables natural language search, and provides smart reminders for recurring payments.",
+    tech: ["React", "TypeScript", "Node.js", "Python", "FastAPI", "GPT-4o", "Pinecone", "Redis", "Celery", "TailwindCSS"],
+    github: "https://github.com/athul-jestin/snaptrace",
   },
   {
     title: "Word-up-master",
@@ -30,6 +23,13 @@ const projects = [
     desc: "Flashcard-based vocabulary learning app leveraging machine translation for effective learning.",
     tech: ["Python", "ML", "Translation API"],
     github: "https://github.com/athul-jestin/Word-up-master",
+  },
+  {
+    title: "Cafe-chatbot",
+    subtitle: "Conversational Data Analysis AI",
+    desc: "AI assistant for interpreting and analyzing café-related data using NLP techniques.",
+    tech: ["Python", "NLP", "Chatbot"],
+    github: "https://github.com/athul-jestin/Cafe-chatbot",
   },
   {
     title: "Salary-Predictor",
